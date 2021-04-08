@@ -1,0 +1,18 @@
+08.04.2020:
+- Manufacturing Region:
+* Svega tri vrijednosti: North America, Asia, Europe
+* Box plot daje iduce vrijednosti:
+  |     VALUE     |    MIN    |  WHISKER  |     Q1    |  MEDIAN   |     Q3    |  WHISKER  |    MAX    |  NUM  |
+  | North America | -22.927k  | -0.28077  |  0.22428  |  0.28024  |  0.56099  |  1.05851  |  6882.409 | 694757|
+  | Asia          | -4.5287M  | -1.243473 |  0.10206  |  0.31395  |  0.99975  |  1.00000  |  1.000000 | 369977|
+  | Europe        | -1.4269k  | -0.14408  |  0.35802  |  0.52194  |  0.69298  |  1.00000  |  1.000000 | 37288 |
+
+Sve varijable imaju znacajne outliere i to prema  dolje
+Therefore, nema razloga clusterat ovu varijablu -> one hot encoding vulgaris
+
+Superfluous je imat i Region i Location zajedno, tako da treba od tih dviju znacajki (3 + 27) dobit manje.
+- Manufacturing Location Code
+* Ideja: za svaku regiju klasterirati lokacije (ne mjesati lokacije izvan regije, pa makar bile slicne)
+* klasteriranje provesti izvlacenjem znacajki iz histograma za svaku lokaciju
+* * znacajke: median, q1, q3
+* * mjera razlicitosti: l2 norma
