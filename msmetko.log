@@ -16,3 +16,6 @@ Superfluous je imat i Region i Location zajedno, tako da treba od tih dviju znac
 * klasteriranje provesti izvlacenjem znacajki iz histograma za svaku lokaciju
 * * znacajke: median, q1, q3
 * * mjera razlicitosti: l2 norma
+
+2021-04-17
+Napravio sam sincos transform nad 'Order Date' značajkom
