@@ -1,0 +1,55 @@
+Sva pitanja imamo unatoč gledanju videa s radionice :)
+Pitanja 1. i 2. su povezana tako da slobodno dajte neki skupni odgovor, ne trebate se ponavljati.
+Hvala unaprijed!
+
+1.Kako točno treba izgledati izlaz našeg modela i kako će se točno evaluirati? Je li to konačan Invoice Price,
+konačan GM%, niz GM% s ocjenama A-F?
+
+Na radionici ste prikazali tablicu queryja i ocjena, gdje je vrijednost
+u ćelijama GM%. Koliko smo razaznali vrijednosti nekad nisu sortirane, tj. kao da postoji pricing strategija
+sa tradeoffom hvatanja što veće margine i osiguranja daljnjeg deal-ovanja. Je li nam to zadatak?
+Kako će se onda evaluirati? Iz dokumentacije:
+
+"Quality of solution would be measured on difference between exact gross margin achieved on real
+invoices vs. predicted by Dynamic Deal Scoring model, and how wide pricing bands are achieved based
+on appropriate data elements. More narrower bands – i.e., difference between min and max price for
+each segment – gets better and more precise/tailored results for end user."
+
+Tu nam nije jasan dio od pricing bands nadalje. Zašto ne bi jednostavno stavili da pricing band bude uzak?
+
+Također, što znači "exact gross margin achieved"? Jeste li GM% u podacima Vi (Atomic Intelligence)
+dobili korištenjem svojeg modela, te znači li to da je customer pristao na cijenu?
+Pomoglo bi da ukratko opišete proces ordera i invoicea, preciznije, može li customer u trenutku slanja
+dinamički preporučene cijene jednostavno odbiti ponudu, te su zapravo podaci instance gdje je na ponudu pristao?
+
+
+2. Kako se u podacima očituje won/lost deal?
+Je li to vremenski gledano zadnja stavka ordera?
+Stavka gdje je invoiced quantity==0?
+Stavka gdje je invoiced price==0?
+Stavka gdje je suma invoiced quantityja manja od ordered quantityja?
+Nešto drugo?
+
+
+3. Koja je razlika između deala i quotea?
+3.1 Pokušali smo rekonstruirati ideju quotea iz "# of unique products on a quote"
+tako da smo grupirali Item Code prema Order #, ali rezultat je uvijek manji ili jednak.
+Imamo teoriju da redovi s Nan Order # zapravo pripadaju u tu razliku postojeće i izračunate vrijednosti,
+ali ne uspijeva nam punjenje/grupiranje takvih redova prema odgovarajućim stupcima da se dobije jedinstvena
+pripadnost skupu stupaca koju dijeli s nekim od ostalih redova.
+
+
+4. Što je customer product mix? Iz dokumentacije:
+
+"For evaluation of delivered models, we will use new dataset with same format of data shared for model
+training, but which is not previously observer by training process so that we can measure how model
+behaves when it encounters new product, customer or any combination, so crucial component of each
+model is finding appropriate balance for our key variables such as deal size, customer product mix,
+etc.. At same time, impact of each recommended price will be calculated against invoice selected price
+to show does model tends to uplift or mode focus on price discounts based on different profiles of
+data, and does it do this in consistent way for single profile."
+
+
+5. Zašto je suma stavki troškova dijelova u ~160k slučajeva(bez slučajeva kad su sve stavke 0 ili Nan)
+različita od Cost of part? S druge strane, Cost of part se uvijek može točno dobiti iz Invoiced price
+i GM%. Je li onda on u podacima izračunata varijabla?
