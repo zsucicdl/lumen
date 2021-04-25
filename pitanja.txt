@@ -24,6 +24,7 @@ dinamički preporučene cijene jednostavno odbiti ponudu, te su zapravo podaci i
 
 
 2. Kako se u podacima očituje won/lost deal?
+Jesu li svi dealovi dobiveni ili ima izgubljenih?
 Je li to vremenski gledano zadnja stavka ordera?
 Stavka gdje je invoiced quantity==0?
 Stavka gdje je invoiced price==0?
@@ -53,3 +54,7 @@ data, and does it do this in consistent way for single profile."
 5. Zašto je suma stavki troškova dijelova u ~160k slučajeva(bez slučajeva kad su sve stavke 0 ili Nan)
 različita od Cost of part? S druge strane, Cost of part se uvijek može točno dobiti iz Invoiced price
 i GM%. Je li onda on u podacima izračunata varijabla?
+
+
+6. Kako ce se testirati nase rjesenje? Opcije su da dataset bude kao za treniranje, ili će ti biti deal po deal, svaki sa nekoliko itema itd.
+Također, kad će API specifikacija?
