@@ -22,7 +22,6 @@ dobili korištenjem svojeg modela, te znači li to da je customer pristao na cij
 Pomoglo bi da ukratko opišete proces ordera i invoicea, preciznije, može li customer u trenutku slanja
 dinamički preporučene cijene jednostavno odbiti ponudu, te su zapravo podaci instance gdje je na ponudu pristao?
 
-
 2. Kako se u podacima očituje won/lost deal?
 Jesu li svi dealovi dobiveni ili ima izgubljenih?
 Je li to vremenski gledano zadnja stavka ordera?
@@ -38,7 +37,8 @@ tako da smo grupirali Item Code prema Order #, ali rezultat je uvijek manji ili 
 Imamo teoriju da redovi s Nan Order # zapravo pripadaju u tu razliku postojeće i izračunate vrijednosti,
 ali ne uspijeva nam punjenje/grupiranje takvih redova prema odgovarajućim stupcima da se dobije jedinstvena
 pripadnost skupu stupaca koju dijeli s nekim od ostalih redova.
-
+3.2 Mozete li garantirati tocnost # of unique products on a quote. Postoje novonastali datumi s vrijednoscu 0,
+te oni s null vrijednostima(to je ok). Ali bez obzira je neobjasnjivo.
 
 4. Što je customer product mix? Iz dokumentacije:
 
@@ -58,3 +58,23 @@ i GM%. Je li onda on u podacima izračunata varijabla?
 
 6. Kako ce se testirati nase rjesenje? Opcije su da dataset bude kao za treniranje, ili će ti biti deal po deal, svaki sa nekoliko itema itd.
 Također, kad će API specifikacija?
+
+7.necessary info za explainability kako da izgleda;stddev metoda
+
+8.R2 30%? ("oko 30%, sto je jako dobro, jer tolko nam daje uplifta"), koliko je od vasih 17 featurea izvedeno?
+
+9. Kako treba dokumentacija izgledat, format broj stranica, moze li bit previse?
+
+10. born on date nekonzistentnost
+
+11.recommenderi
+
+12. mozda o slabo zastupljenim product familyjima
+
+13. customerid,order # -99
+
+14.optional bilo sto za outliere
+15. optional bilo sto za onu tablicu raspodjele po segmentima
+16.(optional) Sto su vam segmenti/moze hint?
+
+
