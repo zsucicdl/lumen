@@ -22,6 +22,28 @@ dobili korištenjem svojeg modela, te znači li to da je customer pristao na cij
 Pomoglo bi da ukratko opišete proces ordera i invoicea, preciznije, može li customer u trenutku slanja
 dinamički preporučene cijene jednostavno odbiti ponudu, te su zapravo podaci instance gdje je na ponudu pristao?
 
+A: Izlaz je oblika node+5 GM percentagea, sortiranih silazno.
+Teorija: inicijalni pricing bandovi 5 ocjena su fiksne duljine, kao npr. jedna petina duljine izmedju max i min
+GM% za taj segment. Distribucija ce biti nesavrsena, ali ce postojati parametri/featurei koji vise utjecu(key score?)
+na stvaranje takve nebalansirane distribucije. Smanjivanjem utjecaja tih parametara ce se distribucija vise
+pribliziti uniformnoj. To tweakanje se radi izmedju ostalog odabirom razlicitih featurea.
+Kreirali su deal_id tj. "skup featura koji zajednicki opisuje jedno ponasanje".
+Nijedan segment ne smije imat manje od 200 elemenata. Znaci ipak ne ni premali segmenti.
+Koristili neuronku(mi ne trebamo), gdje su 2 layera bila definirana kroz proizvodnu lokaciju i proizvodnu industriju,
+jer su to krajnji korisnici tako htjeli.
+Rezultati se moraju moc ponovit. Jos jedan spomenut izlaz je opis nodea, tj koji featurei opisuju node.
+
+Gadjanje A ocjene ima smisla samo kad suu uniformno distribuirane,
+?jer ce inace bit prevelika sirina. obicno se odabere ?srednja margina?
+Teorija 1.1:Segment je idejno barem slican dealu, a izlazno je opisan i kroz oznaku nodea.
+On je kao skup proizvoda/redova koji se ponasaju na slican nacin, te ce kao posljedica toga imati slicnu
+distribuciju gm%.
+Teorija 1.2: Problem iz moje perspektive vuce na clustering?/konstrukcija prikladnihh segmenata+klasifikacija
+svakog ulaznog reda/itema u odgovaracuji node i raspod gm%. Rjesenje ce se stoga evaluirati kao "gledanje oce li ce
+item klasificirati u odgovarajuci segment konzistentno ovisno o prikladnim parametrima"
+Pricing bands se objasnjava: bolje je da su uzi, tj u biti da ima vise segmenata/da je tailoriranije.
+
+
 2. Kako se u podacima očituje won/lost deal?
 Jesu li svi dealovi dobiveni ili ima izgubljenih?
 Je li to vremenski gledano zadnja stavka ordera?
@@ -29,7 +51,7 @@ Stavka gdje je invoiced quantity==0?
 Stavka gdje je invoiced price==0?
 Stavka gdje je suma invoiced quantityja manja od ordered quantityja?
 Nešto drugo?
-
+A:U dtasetu su samo won deals.
 
 3. Koja je razlika između deala i quotea?
 3.1 Pokušali smo rekonstruirati ideju quotea iz "# of unique products on a quote"
@@ -39,6 +61,8 @@ ali ne uspijeva nam punjenje/grupiranje takvih redova prema odgovarajućim stupc
 pripadnost skupu stupaca koju dijeli s nekim od ostalih redova.
 3.2 Mozete li garantirati tocnost # of unique products on a quote. Postoje novonastali datumi s vrijednoscu 0,
 te oni s null vrijednostima(to je ok). Ali bez obzira je neobjasnjivo.
+
+A:Deal je skup ponasanja, quote je zahtjev za offerom.
 
 4. Što je customer product mix? Iz dokumentacije:
 
@@ -50,31 +74,62 @@ etc.. At same time, impact of each recommended price will be calculated against 
 to show does model tends to uplift or mode focus on price discounts based on different profiles of
 data, and does it do this in consistent way for single profile."
 
+A:Kad krenemo radit segmentaciju, vidjet cemo da kupci nekad imaju tendencije kupovati samo neki "skup proizvoda?".
+!???"I to je u biti kako cete vasu segmentaciju napravit"???!
+Spomenuto je da su cros sell upsell i reccommenderi prosirene ideje.
+?ms:interaction featurei tk:tako je ?
+Cusotmeri mogu bit jedan do drugog u prodajnoj regiji, !volumenu! itd. al ne kupuju iste skupine/fam proizvoda.
 
 5. Zašto je suma stavki troškova dijelova u ~160k slučajeva(bez slučajeva kad su sve stavke 0 ili Nan)
 različita od Cost of part? S druge strane, Cost of part se uvijek može točno dobiti iz Invoiced price
 i GM%. Je li onda on u podacima izračunata varijabla?
 
+A: Nisam pitao dosta stvari, tu trebam jos izanalizirat i napokon pocet pisat dokumentaciju.
+Al definitivno negativno nije ilegalno, ako je jedan od 3 pod-cost of parta, onda je kao vec chargean pa se tako
+ispravlja, ako je quantity onda je povrat, ako je price to je isto legitimno.
+Hint: isti proizvodi po razlicitim kupcima ili vremenima, kako ce izgledati trosak, cijena ili neka num.varijabla.
+Jer se cijena gleda u trenutku invoicea, treba npr. gledati jel cijena jednog od vise invoicea koji
+spadaju u order puno odskace od drugih. Probati naci s intercompany interna prebacivanja.
+Postoje greske u unosu podataka, npr. u GM%. U stvarnom svijetu se dobiva cijena za svaki quantity,
+treba vidjet kako ovisi o quantity.
+Kasnije spomenuto da nam special itemi kao transport ili debit nece dolazit u test setu.
 
-6. Kako ce se testirati nase rjesenje? Opcije su da dataset bude kao za treniranje, ili će ti biti deal po deal, svaki sa nekoliko itema itd.
-Također, kad će API specifikacija?
+6. Kako ce se testirati nase rjesenje? Opcije su da dataset bude kao za treniranje, ili će ti biti deal po deal,
+svaki sa nekoliko itema itd. Također, kad će API specifikacija?
+
+A:ODgovoreno kroz prethodna pitanja.
 
 7.necessary info za explainability kako da izgleda;stddev metoda
 
-8.R2 30%? ("oko 30%, sto je jako dobro, jer tolko nam daje uplifta"), koliko je od vasih 17 featurea izvedeno?
+A:Odgovoreno kroz prethodna pitanja.
+
+8. koliko je od vasih 17 featurea izvedeno?
+
+A: "Izvedeni su bili kolicine u dealovima, proizvoda u bucketima,pa onda po platformama..."
+Bilo je bucketiranja.
+Spomenuta kombinacija 3 lokacijska featurea.
+Kod nas su ?svedeni customer region na ?manufacturing, da budu jednaki iz jednostavnosti.
+
 
 9. Kako treba dokumentacija izgledat, format broj stranica, moze li bit previse?
+A: ne stedit,pogotovo ne na data preparation, pisat koliko hoces, i business understanding/opisati problem
+Jezik svejedno, bolje engleski za zivot a bolje hrvatski jer cemo prezentirat na hrvatskom.
 
-10. born on date nekonzistentnost
+10. born on date nekonzistentnost,# of 0 vs null
+
+A: Akvizicija firmi, nisu se retroaktivno mijenjali dateovi, potencijalno rjesenje je prvo pojavljivanje
+proizvoda na invoiceu, pa ?onda tweakati born on date. Reko je da su sigurno tocni invoice date (hehehe).
+? 0 je krivo i zahtijeva rekalkulaciju, dok null cak ni nije.
 
 11.recommenderi
-
-12. mozda o slabo zastupljenim product familyjima
+A:indirektno spomenuto, navodno je odvojeni/prosiren problem.
 
 13. customerid,order # -99
+A:svaki identifier manji od 0/9999 je ilegalan ili nepoznat
 
+NIJE PITANO
+8.R2 30%? ("oko 30%, sto je jako dobro, jer tolko nam daje uplifta"),
+12. mozda o slabo zastupljenim product familyjima
 14.optional bilo sto za outliere
 15. optional bilo sto za onu tablicu raspodjele po segmentima
 16.(optional) Sto su vam segmenti/moze hint?
-
-
