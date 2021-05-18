@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+numpy
+sklearn
+sklearn-pandas
+plotly
+matplotlib
+jupyter
