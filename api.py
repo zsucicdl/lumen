@@ -84,6 +84,8 @@ def get_path(clf, x_input):
 with open('model.pkl', 'rb') as file:
     pipeline = pickle.load(file)
 features = pipeline
+features[0].set_params(dropper=None)
+features.set_params(cluster_dropper=None)
 model = pipeline.steps.pop(-1)[1]
 with open('price_bands.pkl', 'rb') as file:
     price_bands = pickle.load(file)
@@ -97,20 +99,21 @@ async def inference(request: Request):
     if isinstance(json, dict):
         json = [json]
     for json_dict in json:
-        df = pd.DataFrame(json_dict, index=[0])
-        #print(df)
-        df_features = features.transform(df)
-        cluster = model.predict(df_features).item()
-        path = get_path(model, df_features.values)
-        pricing_bands = price_bands[cluster]
-        price = json_dict['Invoiced price']
-        responses.append(
-            {
-                "cluster-id": cluster,
-                "important_features": path,
-                "pricing": dict((letter, price * (1 + pricing_bands[letter.lower() + "_center"])) for letter in "ABCDF")
-            }
-        )
-        #except:
-        #    responses.append({"error": "There was an error with this input. Sorry for the inconvenience."})
+        try:
+            df = pd.DataFrame(json_dict, index=[0])
+            #print(df)
+            df_features = features.transform(df)
+            cluster = model.predict(df_features).item()
+            path = get_path(model, df_features.values)
+            pricing_bands = price_bands[cluster]
+            price = json_dict['Invoiced price']
+            responses.append(
+                {
+                    "cluster-id": cluster,
+                    "important_features": path,
+                    "pricing": dict((letter, price * (1 + pricing_bands[letter.lower() + "_center"])) for letter in "ABCDF")
+                }
+            )
+        except:
+            responses.append({"error": "There was an error with this input. Sorry for the inconvenience."})
     return responses if len(responses) > 1 else responses[0]
